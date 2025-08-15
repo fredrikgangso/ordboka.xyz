@@ -20,8 +20,17 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install dependencies (npm)
-        run: npm install
+      - name: Install dependencies (npm, skip optional)
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci --no-optional
+          else
+            npm install --no-optional
+          fi
+
+      - name: Rebuild native modules
+        run: |
+          npm rebuild || true
 
       - name: Build (npm)
         env:
