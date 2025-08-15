@@ -1,0 +1,17 @@
+[
+  {
+    "id": "1",
+    "word": "agenda",
+    "definition": "A list of items to be discussed during a meeting."
+  },
+  {
+    "id": "2",
+    "word": "minutes",
+    "definition": "A written record of a meeting's discussions and decisions."
+  },
+  {
+    "id": "3",
+    "word": "quorum",
+    "definition": "The minimum number of members required to conduct business."
+  }
+]
