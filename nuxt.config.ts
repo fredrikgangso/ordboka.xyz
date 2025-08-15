@@ -1,3 +1,5 @@
+const base = process.env.BASE_URL || "/";
+
 export default {
   typescript: {
     strict: true,
@@ -11,6 +13,7 @@ export default {
     },
   },
   app: {
+    baseURL: base,
     head: {
       title: "Ordboka",
       meta: [
