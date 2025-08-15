@@ -20,22 +20,17 @@ jobs:
         with:
           node-version: 18
 
-      - name: Enable Corepack / pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@latest --activate
+      - name: Install dependencies (npm)
+        run: npm install
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile=false
-
-      - name: Build
+      - name: Build (npm)
         env:
           BASE_URL: "/ordboka.xyz/"
         run: |
-          pnpm build
+          npm run build
 
-      - name: Generate static site
-        run: pnpm generate
+      - name: Generate static site (npm)
+        run: npm run generate
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
