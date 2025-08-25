@@ -6,7 +6,7 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -23,15 +23,15 @@ jobs:
           node-version: "20"
           cache: "pnpm"
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
       - name: Node diagnostics
         run: |
           node -v
-          pnpm -v || true
-
-      - name: Enable corepack & install pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@latest --activate
+          pnpm -v
 
       - name: Install dependencies (pnpm)
         run: pnpm i
