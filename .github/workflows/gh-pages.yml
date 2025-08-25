@@ -6,7 +6,9 @@ on:
       - main
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   build-and-deploy:
@@ -19,33 +21,29 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: "pnpm"
 
       - name: Node diagnostics
         run: |
           node -v
-          npm -v
-          npx -v || true
+          pnpm -v || true
 
-      - name: Install dependencies (npm, skip optional)
+      - name: Enable corepack & install pnpm
         run: |
-          if [ -f package-lock.json ]; then
-            npm ci --no-optional
-          else
-            npm install --no-optional
-          fi
+          corepack enable
+          corepack prepare pnpm@latest --activate
 
-      - name: Rebuild native modules
-        run: |
-          npm rebuild || true
+      - name: Install dependencies (pnpm)
+        run: pnpm i
 
-      - name: Build (npm)
+      - name: Build (pnpm)
         env:
           BASE_URL: "/ordboka.xyz/"
         run: |
-          npm run build
+          pnpm build
 
-      - name: Generate static site (npm)
-        run: npm run generate
+      - name: Generate static site (pnpm)
+        run: pnpm run generate
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3

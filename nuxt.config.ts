@@ -1,4 +1,6 @@
-const base = process.env.BASE_URL || "/";
+// Default base for GitHub Pages project site (repo: fredrikgangso/ordboka.xyz)
+// Can be overridden by setting the BASE_URL env var (used in the GH Actions workflow).
+const base = process.env.BASE_URL || "/ordboka.xyz/";
 
 export default {
   typescript: {

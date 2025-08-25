@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="search">
-      <input class="input" v-model="query" placeholder="Search words or definitions" />
+      <input class="input" style="color: azure;" v-model="query" placeholder="Search words or definitions" />
     </div>
 
     <div class="list">
@@ -20,6 +20,7 @@ import { ref } from 'vue'
 import { useWords } from '~/composables/useWords'
 import WordItem from '~/components/WordItem.vue'
 import WordModal from '~/components/WordModal.vue'
+import { onMounted, onBeforeUnmount } from 'vue'
 
 const { results, query } = useWords()
 const selected = ref<null | any>(null)
@@ -28,7 +29,6 @@ function open(w: any) {
   selected.value = w
 }
 
-import { onMounted, onBeforeUnmount } from 'vue'
 
 onMounted(() => {
   window.addEventListener('close-word-modal', () => { selected.value = null })
