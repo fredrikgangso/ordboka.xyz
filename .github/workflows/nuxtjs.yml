@@ -86,7 +86,7 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Static HTML export with Nuxt
-        run: pnpm run generate
+        run: pnpm run generate --reporter silent || pnpm run generate
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
