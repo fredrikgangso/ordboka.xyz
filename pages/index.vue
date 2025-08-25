@@ -29,12 +29,18 @@ function open(w: any) {
   selected.value = w
 }
 
+// use a named handler so removeEventListener can remove it -- but prefer
+// parent-local events. We'll listen for Escape via a handler that sets selected to null.
+function onKeyClose(e: KeyboardEvent) {
+  if (e.key === 'Escape') selected.value = null
+}
 
 onMounted(() => {
-  window.addEventListener('close-word-modal', () => { selected.value = null })
+  // only attach global handler on client
+  window.addEventListener('keydown', onKeyClose)
 })
 onBeforeUnmount(() => {
-  window.removeEventListener('close-word-modal', () => { selected.value = null })
+  window.removeEventListener('keydown', onKeyClose)
 })
 </script>
 

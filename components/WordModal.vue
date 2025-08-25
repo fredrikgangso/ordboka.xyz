@@ -1,28 +1,35 @@
 <template>
-    <teleport to="body">
-        <div class="modal-backdrop" @click.self="$emit('close')">
-            <div class="modal-card" role="dialog" aria-modal="true">
-                <div style="display:flex;justify-content:space-between;align-items:flex-start">
-                    <div>
-                        <div class="word">{{ word.word }}</div>
-                        <div class="small" v-if="word.ordklasse">{{ word.ordklasse }}</div>
+    <client-only>
+        <teleport to="body">
+            <div class="modal-backdrop" @click.self="$emit('close')">
+                <div class="modal-card" role="dialog" aria-modal="true">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                        <div>
+                            <div class="word">{{ word.word }}</div>
+                            <div class="small" v-if="word.ordklasse">{{ word.ordklasse }}</div>
+                        </div>
+                        <button @click="$emit('close')">Close</button>
                     </div>
-                    <button @click="$emit('close')">Close</button>
-                </div>
-                <div class="meta" style="margin-top:12px" v-if="word.tilleggsinformasjon">{{ word.tilleggsinformasjon }}
-                </div>
-                <div style="margin-top:12px">
-                    <div v-for="(d, i) in (word.definitions || [word.definition])" :key="i" style="margin-top:8px">{{ d
-                        }}</div>
+                    <div class="meta" style="margin-top:12px" v-if="word.tilleggsinformasjon">{{
+                        word.tilleggsinformasjon }}
+                    </div>
+                    <div style="margin-top:12px">
+                        <div v-for="(d, i) in (word.definitions || [word.definition])" :key="i" style="margin-top:8px">
+                            {{ d
+                            }}</div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </teleport>
+        </teleport>
+    </client-only>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount } from 'vue'
+import { onMounted, onBeforeUnmount, defineEmits } from 'vue'
 defineProps<{ word: any }>()
+const emit = defineEmits<{
+    (e: 'close'): void
+}>()
 
 // Save previous body styles so we can restore them when modal closes
 let prevBodyOverflow: string | null = null
@@ -32,6 +39,7 @@ let prevBodyWidth: string | null = null
 let scrollY = 0
 
 function lockBodyScroll() {
+    // only access window/document on client inside lifecycle hooks
     scrollY = window.scrollY || window.pageYOffset || 0
     prevBodyOverflow = document.body.style.overflow
     prevBodyPosition = document.body.style.position
@@ -57,8 +65,8 @@ function unlockBodyScroll() {
 
 const onKey = (e: KeyboardEvent) => {
     if (e.key === 'Escape') {
-        // dispatch a custom event listened by parent
-        window.dispatchEvent(new CustomEvent('close-word-modal'))
+        // emit close event to parent
+        emit('close')
     }
 }
 
